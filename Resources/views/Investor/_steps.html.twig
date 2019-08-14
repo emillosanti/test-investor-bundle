@@ -1,0 +1,31 @@
+{% set lastActiveStep = null %}
+<div class="deal-steps {% if muted is defined and muted %}deal-steps-muted{% endif %} {% if small is defined and small %}deal-steps-small{% endif %}">
+    <ul class="list-unstyled">
+        {% for step in steps %}
+            {% if step.position == investor.currentStep.position %}
+                {% set lastActiveStep = step %}
+            {% endif %}
+            <li class="{% if step.position <= investor.currentStep.position %}active{% else %}inactive{% endif %} {% if step.position == investor.currentStep.position %}last-active{% endif %}">
+                {% if loop.first and step.position == investor.currentStep.position %}
+                    <i class="line-dotted"></i>
+                {% elseif loop.first and step.position != investor.currentStep.position %}
+                    <i class="line"></i>
+                {% elseif not loop.last %}
+                    <i class="line{% if step.position >= investor.currentStep.position %}-dotted{% endif %}"></i>
+                {% endif %}
+                <a class="{% if step.position <= investor.currentStep.position %}active{% else %}inactive{% endif %}">
+                    <span>{{ loop.index }}</span>
+                    {% if muted is not defined or not muted and not small %}
+                        {{ step.name }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+        {% if ((muted is defined and muted) or (small is defined and small)) and lastActiveStep %}
+            <li class="last-step-name">
+                <span {% if not muted and small %}style="color: {{ lastActiveStep.backgroundColor }};"{% endif %}>{{ lastActiveStep.name }}</span>
+            </li>
+        {% endif %}
+        <li><span></span></li>
+    </ul>
+</div>

@@ -1,0 +1,42 @@
+<div class="row show-header">
+    <div class="col-md-5 col-xs-12">
+        <div class="info-wrapper">
+            <div class="info-wrapper-logo">
+                {# @TODO svg #}
+                {% if investor.type == constant('SAM\\InvestorBundle\\Entity\\Investor::TYPE_LEGAL_PERSON') %}
+                <a href="{{ path('edit_company', { company: investor.company.id }) }}">
+                    <img src="{{ investor.company|picture({'fieldName': 'logoFile', 'default': 'company.png', 'size': '200', 'imagineFilter': 'company_thumb_md'}) }}" alt="{{ investor.name }}" />
+                </a>
+                {% else %}
+                <a href="{{ investor.contactMerged|profileUrl }}">
+                    <img src="{{ investor.contactMerged|picture({'imagineFilter': 'user_contact_thumb_md'}) }}" alt="{{ investor.name }}" />
+                </a>
+                {% endif %}
+            </div>
+            <div class="info-wrapper-name">
+                {% if investor.type == constant('SAM\\InvestorBundle\\Entity\\Investor::TYPE_LEGAL_PERSON') %}
+                <h1 class="page-title"><a href="{{ path('edit_company', {company: investor.company.id}) }}">{{ investor.name }}</a></h1>
+                {% else %}
+                <h1 class="page-title"><a href="{{ investor.contactMerged|profileUrl }}">{{ investor.name }}</a></h1>
+                {% endif %}
+                <p>
+                    <img src="{{ investor.creator|picture({'imagineFilter': 'user_contact_thumb_sm'}) }}" alt="{{ investor.creator.fullName }}" title="{{ investor.creator.fullName }}">
+                    LP créé par {{ investor.creator.fullName }}, le {{ investor.createdAt|localizeddate('short', 'none') }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7 col-xs-12">
+        {% if not editMode %}
+            <div class="btn-wrapper visible-md visible-lg visible-sm">
+                <a class="btn btn-info btn-md" href="{{ path('investor_edit', {investor: investor.id}) }}"><i class="icon-pen"></i> Éditer le LP</a>
+            </div>
+            <div class="btn-wrapper visible-xs">
+                <div class="close-button-wrapper">
+                    <a href="{{ path('investor_list') }}" class="close-button">X</a>
+                </div>
+                <a class="btn btn-sm btn-block btn-info" href="{{ path('investor_edit', {investor: investor.id}) }}">Éditer le LP</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

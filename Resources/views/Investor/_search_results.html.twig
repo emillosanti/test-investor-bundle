@@ -1,0 +1,27 @@
+{% form_theme form '@SAMInvestor/Form/theme.html.twig' %}
+
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+<div class="row">
+    <div class="filter-box">
+        <div class="result-tab-selector-box">
+            <div class="result-tab-selector-box__title">Filtre</div>
+            {{ form_widget(form.myInvestor, {myInvestorsCount: myInvestorsCount, allInvestorsCount: allInvestorsCount}) }}
+        </div>
+        <div class="investor-box">
+            <div class="investor-box__title">Affichage</div>
+            {{ form_widget(form.layout) }}
+        </div>
+        <div class="export-investors-wrapper">
+            <input type="hidden" name="export" id="export-enabled" value="0" />
+            <button type="submit" class="export-investors btn btn-block btn-primary">{{ 'button.investor.export'|trans }}</button>
+        </div>
+    </div>
+</div>
+<div class="search-result">
+    {% if form.layout.vars.value == 'table' %}
+        {% include "@SAMInvestor/Investor/_list_ajax_table.html.twig" %}
+    {% else %}
+        {% include "@SAMInvestor/Investor/_list_ajax.html.twig" %}
+    {% endif %}
+</div>

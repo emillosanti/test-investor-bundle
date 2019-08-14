@@ -1,0 +1,51 @@
+<div class="investor-step-wrapper">
+    <input
+            type="checkbox"
+            name="{{ item.vars.full_name }}"
+            id="{{ item.vars.id }}"
+            value="{{ item.vars.value }}"
+            {% if form.vars.data and item.vars.value in form.vars.data|arrayMapObjectProperty('id') %} checked="checked"{% endif %}
+            {% if step and step.backgroundColor %} data-color="{{ step.backgroundColor }}"{% else %} data-color="grey"{% endif %}
+    />
+    {% if form.vars.data and item.vars.value in form.vars.data|arrayMapObjectProperty('id') %}
+        {% set color = '#fff' %}
+        {% if step and step.backgroundColor %}
+            {% set bgColor = step.backgroundColor %}
+            {% set borderColor = step.backgroundColor %}
+        {% else %}
+            {% set bgColor = 'grey' %}
+            {% set borderColor = 'grey' %}
+        {% endif %}
+    {% else %}
+        {% set color = 'grey' %}
+        {% set bgColor = 'transparent' %}
+        {% if step and step.backgroundColor %}
+            {% set borderColor = step.backgroundColor %}
+        {% else %}
+            {% set borderColor = 'grey' %}
+        {% endif %}
+        {% if step and step.textColor %}
+            {% set color = step.textColor %}
+        {% elseif step and step.backgroundColor %}
+            {% set color = step.backgroundColor %}
+        {% endif %}
+    {% endif %}
+    <label class="investor-step-wrapper__label"
+           style="color: {{ color }};border-color:{{ borderColor }};background: {{ bgColor }};"
+           for="{{ item.vars.id }}"
+    >
+        {% if step %}
+            {{ item.vars.label }}
+            {% set nbByStep = facets is defined ? count_investor_by_step_facets(step, facets) : count_investor_by_step(step) %}
+            {% if nbByStep > 0 %}
+                ({{ nbByStep }})
+            {% endif %}
+        {% else %}
+            {% set total = count_total_active_investors() %}
+            Tous
+            {% if total > 0 %}
+                ({{ count_total_active_investors() }})
+            {% endif %}
+        {% endif %}
+    </label>
+</div>

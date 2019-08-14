@@ -1,0 +1,56 @@
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+<section class="panel">
+    <div class="panel-heading">
+        <h4>{{ 'title.investor_legal_entity.fundraiser'|trans }}</h4>
+    </div>
+    <div class="panel-body">
+        {{ form_row(form.fundraiser.feesPercentage) }}
+        <div class="row">
+            <div class="col-sm-6 col-xs-12">
+                <div
+                    class="form-group contact-autocomplete autocomplete-wrapper"
+                    data-url="{{ path('search_contacts_merged') }}"
+                    data-value="{{ investorLegalEntity.fundraiser and investorLegalEntity.fundraiser.contact ? investorLegalEntity.fundraiser.contact.id : null }}"
+                    data-label="{{ investorLegalEntity.fundraiser and investorLegalEntity.fundraiser.contact ? investorLegalEntity.fundraiser.contact.fullName : null }}"
+                    data-placeholder="{{ 'form.contact.placeholder'|trans({}, 'SAMCommonBundle') }}">
+
+                    <div class="hidden new-select2-wrapper">
+                        <a class="new-select2 open-side-panel" href="{{ path('add_contact') }}?response_type=json"
+                           data-event="contact_merged_form_loaded" data-browser-history="false">
+                            <i class="fa fa-plus-circle"></i>
+                            <span class="text">
+                                {{ 'contact.404'|trans({}, 'SAMCommonBundle') }}
+                                <small>{{ 'contact.create'|trans({}, 'SAMCommonBundle') }}</small>
+                            </span>
+                        </a>
+                    </div>
+                    <label>{{ form_label(form.fundraiser.contact) }}</label>
+                    {{ form_widget(form.fundraiser.contact) }}
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div
+                    class="form-group company-autocomplete autocomplete-wrapper"
+                    data-url="{{ path('search_companies') }}"
+                    data-value="{{ (investorLegalEntity.fundraiser and investorLegalEntity.fundraiser.company) ? investorLegalEntity.getFundraiser().getCompany().id : null }}"
+                    data-label="{{ (investorLegalEntity.fundraiser and investorLegalEntity.fundraiser.company) ? investorLegalEntity.fundraiser.company.name : null }}"
+                    data-placeholder="{{ 'form.company.placeholder'|trans({}, 'SAMCommonBundle') }}">
+
+                    <div class="hidden new-select2-wrapper">
+                        <a class="new-select2 open-side-panel" href="{{ path('add_company') }}?response_type=json"
+                           data-browser-history="false">
+                            <i class="fa fa-plus-circle"></i>
+                            <span class="text">
+                                {{ 'company.404'|trans({}, 'SAMCommonBundle') }}
+                                <small>{{ 'company.create'|trans({}, 'SAMCommonBundle') }}</small>
+                            </span>
+                        </a>
+                    </div>
+                    <label>{{ form_label(form.fundraiser.company) }}</label>
+                    {{ form_widget(form.fundraiser.company) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

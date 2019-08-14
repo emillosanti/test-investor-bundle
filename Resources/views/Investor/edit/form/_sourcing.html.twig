@@ -1,0 +1,56 @@
+{% trans_default_domain 'SAMCommonBundle' %}
+
+<section class="panel">
+    <div class="panel-heading">
+        <h4>{{ 'sourcing'|trans }}</h4>
+    </div>
+    <div class="panel-body">
+        {{ form_row(form.sourcing.category) }}
+        <div class="row">
+            <div class="col-sm-6 col-xs-12">
+                <div
+                    class="form-group contact-autocomplete autocomplete-wrapper"
+                    data-url="{{ path('search_contacts_merged') }}"
+                    data-value="{{ investorLegalEntity.sourcing and investorLegalEntity.sourcing.contact ? investorLegalEntity.sourcing.contact.id : null }}"
+                    data-label="{{ investorLegalEntity.sourcing and investorLegalEntity.sourcing.contact ? investorLegalEntity.sourcing.contact.fullName : null }}"
+                    data-placeholder="{{ 'form.contact.placeholder'|trans({}, 'SAMCommonBundle') }}">
+
+                    <div class="hidden new-select2-wrapper">
+                        <a class="new-select2 open-side-panel" href="{{ path('add_contact') }}?response_type=json"
+                           data-event="contact_merged_form_loaded" data-browser-history="false">
+                            <i class="fa fa-plus-circle"></i>
+                            <span class="text">
+                                {{ 'contact.404'|trans }}
+                                <small>{{ 'contact.create'|trans }}</small>
+                            </span>
+                        </a>
+                    </div>
+                    <label>{{ form_label(form.sourcing.contact) }}</label>
+                    {{ form_widget(form.sourcing.contact) }}
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div
+                    class="form-group company-autocomplete autocomplete-wrapper"
+                    data-url="{{ path('search_companies') }}"
+                    data-value="{{ investorLegalEntity.sourcing and investorLegalEntity.sourcing.company ? investorLegalEntity.sourcing.company.id : null }}"
+                    data-label="{{ investorLegalEntity.sourcing and investorLegalEntity.sourcing.company ? investorLegalEntity.sourcing.company.name : null }}"
+                    data-placeholder="{{ 'form.company.placeholder'|trans({}, 'SAMCommonBundle') }}">
+
+                    <div class="hidden new-select2-wrapper">
+                        <a class="new-select2 open-side-panel" href="{{ path('add_company') }}?response_type=json"
+                           data-browser-history="false">
+                            <i class="fa fa-plus-circle"></i>
+                            <span class="text">
+                                {{ 'company.404'|trans }}
+                                <small>{{ 'company.create' }}</small>
+                            </span>
+                        </a>
+                    </div>
+                    <label>{{ form_label(form.sourcing.company) }}</label>
+                    {{ form_widget(form.sourcing.company) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

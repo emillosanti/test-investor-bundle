@@ -1,0 +1,87 @@
+{% extends "@SAMCommon/Layout/_one_column_layout.html.twig" %}
+
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% form_theme form '@SAMCommon/Form/theme.html.twig' %}
+
+{% block meta_title %}Créer un LP | {{ site_name }}{% endblock %}
+
+{% block main_action_buttons %}{% include "@SAMInvestor/Global/main_action_button.html.twig" %}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# @TODO use dealflow styles while it looks 100% the same #}
+    <script src="{{ asset('build/dealflow/create_step_1.js') }}"></script>
+{% endblock %}
+
+{% block page_content %}
+    {{ form_start(form) }}
+    <section>
+        <a class="go-back" href="{{ path('investor_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            Revenir aux LPs
+        </a>
+
+        <div class="form-content">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                    <button class="styled btn btn-xs btn-success btn-no-interaction">Étape 1 / 2</button>
+                    <h1>Nouveau LP</h1>
+                    {% block flashs %}{% include "@SAMCommon/flash-messages.hml.twig" %}{% endblock %}
+
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="icon-building-alt sm pull-left hidden-sm"></i>
+                            <div>
+                                <h4>Rechercher une entreprise ou une personne physique dans le carnet d'adresses</h4>
+                                <div class="contact-details">
+                                    <div
+                                        class="form-group autocomplete-wrapper autocomplete-investor-import"
+                                        data-url="{{ path('search_query_merged_contacts', { 'ia-connect': false }) }}">
+
+                                        <div class="hidden new-select2-wrapper">
+                                            <a class="new-select2" href="{{ path('investor_create_step2', { type: 10 }) }}">
+                                                <i class="fa fa-plus-circle"></i>
+                                                <span class="text">
+                                                    Je ne trouve pas l'entreprise
+                                                    <small>Créer un nouvel investisseur personne morale</small>
+                                                </span>
+                                            </a>
+                                        </div>
+
+                                        <div class="hidden new-select2-wrapper">
+                                            <a class="new-select2" href="{{ path('investor_create_step2', { type: 20 }) }}">
+                                                <i class="fa fa-plus-circle"></i>
+                                                <span class="text">
+                                                    Je ne trouve pas la personne
+                                                    <small>Créer un nouvel investisseur personne physique</small>
+                                                </span>
+                                            </a>
+                                        </div>
+
+                                        {{ form_label(form.companyOrContact) }}
+                                        {{ form_widget(form.companyOrContact) }}
+                                        {{ form_widget(form.type) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="form-actions inner-content">
+        <ul class="stepper pull-left">
+            <li><span class="step active">1</span></li>
+            <li><span class="step">2</span></li>
+        </ul>
+
+        <div class="pull-right">
+            <button type="submit" class="btn btn-sm btn-primary styled" disabled>Suivant</button>
+        </div>
+    </section>
+    {{ form_end(form) }}
+{% endblock %}

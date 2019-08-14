@@ -1,0 +1,53 @@
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% set mainForm = form %}
+{% for form in form.investorLegalEntities %}
+    {% set investorLegalEntity = form.vars.value %}
+
+    <div role="tabpanel"
+         class="tab-pane fade {% if investorLegalEntity.id is null and mainForm.vars.valid %}hidden{% endif %}"
+         id="legal_entity_{{ investorLegalEntity.legalEntity.id }}" data-id="{{ investorLegalEntity.legalEntity.id }}">
+        <div class="row">
+            <div class="col-md-9 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-5 col-xs-12">
+                        <section class="panel">
+                            <div class="panel-heading">
+                                <h4>{{'title.investor_legal_entity.investment'|trans}}</h4>
+                            </div>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="panel-body">
+                                        {{ form_row(form.details) }}
+                                        {{ form_row(form.isInvestmentAmountOverridden) }}
+                                        {{ form_row(form.investmentAmount) }}
+                                        {{ form_row(form.boards) }}
+                                        {{ form_row(form.warrantSignedAt) }}
+                                        {{ form_row(form.closing) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="col-lg-7 col-xs-12">
+                        {% include "@SAMInvestor/Investor/edit/form/_sourcing.html.twig" with { investor: investor, form: form } %}
+                        {% include "@SAMInvestor/Investor/edit/form/_fundraiser.html.twig" with { investor: investor, form: form } %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-xs-12">
+                {{ form_row(form.users) }}
+                <section class="panel company-edit-form">
+                    <div class="panel-heading">
+                        <h4>{{ 'form.contacts.label'|trans }}</h4>
+                    </div>
+                    {{ form_row(form.contacts) }}
+                </section>
+            </div>
+        </div>
+
+        {% include "@SAMInvestor/Investor/edit/_footer.html.twig" with { investor: investor, ile: investorLegalEntity } %}
+    </div>
+{% endfor %}

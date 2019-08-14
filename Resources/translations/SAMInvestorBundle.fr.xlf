@@ -1,0 +1,483 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="label.investor.category">
+                <source>label.investor.category</source>
+                <target>Catégorie</target>
+            </trans-unit>
+            <trans-unit id="label.investor.users">
+                <source>label.investor.users</source>
+                <target>Utilisateurs</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.category">
+                <source>placeholder.investor.category</source>
+                <target>Veuillez choisir une catégorie d'investisseur</target>
+            </trans-unit>
+            <trans-unit id="label.investor.total_investment_amounts">
+                <source>label.investor.total_investment_amount</source>
+                <target>Total Investment amount</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.category.all">
+                <source>placeholder.investor.category.all</source>
+                <target>Tous</target>
+            </trans-unit>
+            <trans-unit id="label.investor.has_fundraiser">
+                <source>label.investor.has_fundraiser</source>
+                <target>Intermédiaire</target>
+            </trans-unit>
+            <trans-unit id="label.investor.hasnt_fundraiser">
+                <source>label.investor.hasnt_fundraiser</source>
+                <target>Aucun intermédiaire</target>
+            </trans-unit>
+            <trans-unit id="label.investor.contactmerged">
+                <source>label.investor.contactmerged</source>
+                <target>Personne physique</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.contactmerged">
+                <source>placeholder.investor.contactmerged</source>
+                <target>Recherche une personne physique</target>
+            </trans-unit>
+            <trans-unit id="investor.type.legal_person">
+                <source>investor.type.legal_person</source>
+                <target>Personne morale</target>
+            </trans-unit>
+            <trans-unit id="investor.type.natural_person">
+                <source>investor.type.natural_person</source>
+                <target>Personne physique</target>
+            </trans-unit>
+            <trans-unit id="label.investor.type">
+                <source>label.investor.type</source>
+                <target>Type</target>
+            </trans-unit>
+            <trans-unit id="label.investor.sourcing_type">
+                <source>label.investor.sourcing_type</source>
+                <target>Sourcing</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.sourcing_type.all">
+                <source>placeholder.investor.sourcing_type.all</source>
+                <target>Tous</target>
+            </trans-unit>
+            <trans-unit id="label.investor.legal_entity">
+                <source>label.investor.legal_entity</source>
+                <target>Véhicule</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.legal_entity.all">
+                <source>placeholder.investor.legal_entity.all</source>
+                <target>Tous</target>
+            </trans-unit>
+            <trans-unit id="label.investor.share_category">
+                <source>label.investor.share_category</source>
+                <target>Catégorie d'actions</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.share_category.all">
+                <source>placeholder.investor.share_category.all</source>
+                <target>Tous</target>
+            </trans-unit>
+            <trans-unit id="label.investor.total_investment_amount">
+                <source>label.investor.total_investment_amount</source>
+                <target>Montant investissement total</target>
+            </trans-unit>
+            <trans-unit id="label.investor.query">
+                <source>label.investor.query</source>
+                <target>Rechercher parmi les LPs par nom de société ou nom de personne</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.chart_no_result">
+                <source>placeholder.investor.chart_no_result</source>
+                <target>Aucun LP trouvé avec ces filtres</target>
+            </trans-unit>
+            <trans-unit id="label.investor.view_all_filters">
+                <source>label.investor.view_all_filters</source>
+                <target>Recherche avancée</target>
+            </trans-unit>
+            <trans-unit id="title.investor.total_investment_chart">
+                <source>title.investor.total_investment_chart</source>
+                <target>LPs par tranche d'investissement</target>
+            </trans-unit>
+            <trans-unit id="title.investor.investor_category">
+                <source>title.investor.investor_category</source>
+                <target>LPs par catégorie</target>
+            </trans-unit>
+            <trans-unit id="title.investor.investor_legal_entity">
+                <source>title.investor.investor_legal_entity</source>
+                <target>LPs par véhicule</target>
+            </trans-unit>
+            <trans-unit id="title.investor.investor_by_fundraiser">
+                <source>title.investor.investor_by_fundraiser</source>
+                <target>Exposition fees par intérmédiaire / leveur</target>
+            </trans-unit>
+            <trans-unit id="label.investor.company_or_contact">
+                <source>label.investor.company_or_contact</source>
+                <target>Nom de société ou de personne</target>
+            </trans-unit>
+            <trans-unit id="choice.fundraiser.yes">
+                <source>choice.fundraiser.yes</source>
+                <target>Oui</target>
+            </trans-unit>
+            <trans-unit id="choice.fundraiser.no">
+                <source>choice.fundraiser.no</source>
+                <target>Non</target>
+            </trans-unit>
+            <trans-unit id="choice.fundraiser.all">
+                <source>choice.fundraiser.all</source>
+                <target>Tous</target>
+            </trans-unit>
+            <trans-unit id="form.isTaxBenefitActivated.header">
+                <source>form.isTaxBenefitActivated.header</source>
+                <target>Avantage fiscal</target>
+            </trans-unit>
+            <trans-unit id="form.isTaxBenefitActivated.label">
+                <source>form.isTaxBenefitActivated.label</source>
+                <target>Bénéfice de l'avantage fiscal pour les personnes physique</target>
+            </trans-unit>
+            <trans-unit id="investor.type.contact.header">
+                <source>investor.type.contact.header</source>
+                <target>Informations personne physique</target>
+            </trans-unit>
+            <trans-unit id="investor.type.company">
+                <source>investor.header.contact</source>
+                <target>Informations personne physique</target>
+            </trans-unit>
+            <trans-unit id="form.warrantSignedAt.label">
+                <source>form.warrantSignedAt.label</source>
+                <target>Date signature BS</target>
+            </trans-unit>
+            <trans-unit id="form.investmentAmount.label">
+                <source>form.investmentAmount.label</source>
+                <target>Ticket (k€)</target>
+            </trans-unit>
+            <trans-unit id="form.investmentAmountOverridden.label">
+                <source>form.investmentAmountOverridden.label</source>
+                <target>Entrer un ticket manuellement (et ne plus prendre en compte les actions souscrites)</target>
+            </trans-unit>
+            <trans-unit id="form.closing.label">
+                <source>form.closing.label</source>
+                <target>Closing</target>
+            </trans-unit>
+            <trans-unit id="form.boards.label">
+                <source>form.boards.label</source>
+                <target>Comités</target>
+            </trans-unit>
+            <trans-unit id="form.boards.placeholder">
+                <source>form.boards.placeholder</source>
+                <target>Rechercher un comité</target>
+            </trans-unit>
+            <trans-unit id="form.contacts.label">
+                <source>form.contacts.label</source>
+                <target>Interlocuteurs</target>
+            </trans-unit>
+            <trans-unit id="form.contacts.placeholder">
+                <source>form.contacts.placeholder</source>
+                <target>Rechercher un contact</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sheet_name">
+                <source>lps.export.sheet_name</source>
+                <target>LPs</target>
+            </trans-unit>
+            <trans-unit id="lps.export.legal_entity_name">
+                <source>lps.export.legal_entity_name</source>
+                <target>Véhicule</target>
+            </trans-unit>
+            <trans-unit id="lps.export.warrant_signed_at">
+                <source>lps.export.warrant_signed_at</source>
+                <target>Date de signature BS</target>
+            </trans-unit>
+            <trans-unit id="lps.export.closing">
+                <source>lps.export.closing</source>
+                <target>Closing</target>
+            </trans-unit>
+            <trans-unit id="lps.export.interacted_at">
+                <source>lps.export.interacted_at</source>
+                <target>Date de dernier contact</target>
+            </trans-unit>
+            <trans-unit id="lps.export.investor_name">
+                <source>lps.export.investor_name</source>
+                <target>Investisseur</target>
+            </trans-unit>
+            <trans-unit id="lps.export.investor_type">
+                <source>lps.export.investor_type</source>
+                <target>Personne morale / physique</target>
+            </trans-unit>
+            <trans-unit id="lps.export.investor_category">
+                <source>lps.export.investor_category</source>
+                <target>Catégorie</target>
+            </trans-unit>
+            <trans-unit id="lps.export.investment_amount">
+                <source>lps.export.investment_amount</source>
+                <target>Ticket k€</target>
+            </trans-unit>
+            <trans-unit id="lps.export.investment_amount_percentage">
+                <source>lps.export.investment_amount_percentage</source>
+                <target>Ticket %</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_category">
+                <source>lps.export.sourcing_category</source>
+                <target>Catégorie Sourcing</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_company_name">
+                <source>lps.export.sourcing_company_name</source>
+                <target>Société</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_lastname">
+                <source>lps.export.sourcing_lastname</source>
+                <target>Nom</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_firstname">
+                <source>lps.export.sourcing_firstname</source>
+                <target>Prénom</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_email">
+                <source>lps.export.sourcing_email</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_phone">
+                <source>lps.export.sourcing_phone</source>
+                <target>Téléphone</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing_job">
+                <source>lps.export.sourcing_job</source>
+                <target>Poste</target>
+            </trans-unit>
+            <trans-unit id="lps.export.fundraiser">
+                <source>lps.export.fundraiser</source>
+                <target>Leveur (société)</target>
+            </trans-unit>
+            <trans-unit id="lps.export.fees_amount">
+                <source>lps.export.fees_amount</source>
+                <target>Fees (k€)</target>
+            </trans-unit>
+            <trans-unit id="lps.export.fees_percentage">
+                <source>lps.export.fees_percentage</source>
+                <target>Fees (%)</target>
+            </trans-unit>
+            <trans-unit id="lps.export.board">
+                <source>lps.export.board</source>
+                <target>Comité</target>
+            </trans-unit>
+            <trans-unit id="lps.export.contact_lastname">
+                <source>lps.export.contact_lastname</source>
+                <target>Nom</target>
+            </trans-unit>
+            <trans-unit id="lps.export.contact_firstname">
+                <source>lps.export.contact_firstname</source>
+                <target>Prénom</target>
+            </trans-unit>
+            <trans-unit id="lps.export.contact_emails">
+                <source>lps.export.contact_emails</source>
+                <target>E-mails</target>
+            </trans-unit>
+            <trans-unit id="lps.export.contact_phones">
+                <source>lps.export.contact_phones</source>
+                <target>Téléphones</target>
+            </trans-unit>
+            <trans-unit id="lps.export.contact_job">
+                <source>lps.export.contact_job</source>
+                <target>Fonction</target>
+            </trans-unit>
+            <trans-unit id="lps.export.creator">
+                <source>lps.export.creator</source>
+                <target>Saisie</target>
+            </trans-unit>
+            <trans-unit id="lps.export.users_label_letter">
+                <source>lps.export.users_label_letter</source>
+                <target>R</target>
+            </trans-unit>
+            <trans-unit id="lps.export.sourcing">
+                <source>lps.export.sourcing</source>
+                <target>Sourcing</target>
+            </trans-unit>
+            <trans-unit id="lps.export.primary_contact">
+                <source>lps.export.primary_contact</source>
+                <target>Contact principal</target>
+            </trans-unit>
+            <trans-unit id="lps.export.fundraiser_contact">
+                <source>lps.export.fundraiser_contact</source>
+                <target>Contact intermédiaire</target>
+            </trans-unit>
+            <trans-unit id="button.investor.export">
+                <source>button.investor.export</source>
+                <target>Exporter</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.sourcing">
+                <source>title.investor_legal_entity.sourcing</source>
+                <target>Sourcing</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.sourcing.category.none">
+                <source>investor_legal_entity.sourcing.category.none</source>
+                <target>Aucune catégorie</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.sourcing.contact.none">
+                <source>investor_legal_entity.sourcing.contact.none</source>
+                <target>Aucun contact</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.sourcing.none">
+                <source>investor_legal_entity.sourcing.none</source>
+                <target>Aucun sourcing</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.sourcing.category.title">
+                <source>investor_legal_entity.sourcing.category.title</source>
+                <target>Catégorie</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.team.title">
+                <source>investor_legal_entity.team.title</source>
+                <target>Équipe</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.team.none">
+                <source>investor_legal_entity.team.none</source>
+                <target>Pas d'équipe pour le moment</target>
+            </trans-unit>
+            <trans-unit id="success.investor.edit">
+                <source>success.investor.edit</source>
+                <target>Les modifications ont bien été prises en compte.</target>
+            </trans-unit>
+            <trans-unit id="placeholder.investor.closing.all">
+                <source>placeholder.investor.closing.all</source>
+                <target>Tous</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.investment">
+                <source>title.investor_legal_entity.investment</source>
+                <target>Investissement</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.fundraiser">
+                <source>title.investor_legal_entity.fundraiser</source>
+                <target>Intermédiaire / leveur</target>
+            </trans-unit>
+            <trans-unit id="text.investor_legal_entity.fundraiser">
+                <source>text.investor_legal_entity.fundraiser</source>
+                <target>Fees : %percentage% - %amount%</target>
+            </trans-unit>
+            <trans-unit id="text.investor_legal_entity.fundraiser.none">
+                <source>text.investor_legal_entity.fundraiser.none</source>
+                <target>Aucun</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.boards">
+                <source>title.investor_legal_entity.boards</source>
+                <target>{0,1}Comité|]1,Inf[Comités</target>
+            </trans-unit>
+            <trans-unit id="text.investor_legal_entity.boards.none">
+                <source>text.investor_legal_entity.boards.none</source>
+                <target>Aucun comité</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.warrant_signed_at">
+                <source>title.investor_legal_entity.warrant_signed_at</source>
+                <target>Date signature BS</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.closing">
+                <source>title.investor_legal_entity.closing</source>
+                <target>Closing</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.details.shares">
+                <source>title.investor_legal_entity.details.shares</source>
+                <target>Actions souscrites</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.details.shares.category">
+                <source>title.investor_legal_entity.details.shares.category</source>
+                <target>Catégorie</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.details.shares.unit_price">
+                <source>title.investor_legal_entity.details.shares.unit_price</source>
+                <target>Prix unitaire</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.details.shares.amount">
+                <source>title.investor_legal_entity.details.shares.amount</source>
+                <target>Nombre</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.details.shares.total">
+                <source>title.investor_legal_entity.details.shares.total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="text.investor_legal_entity.details.shares.none">
+                <source>text.investor_legal_entity.details.shares.none</source>
+                <target>Aucune action souscrite</target>
+            </trans-unit>
+            <trans-unit id="title.investor_legal_entity.contacts">
+                <source>title.investor_legal_entity.contacts</source>
+                <target>{0,1}Interlocuteur|]1,Inf[Interlocuteurs</target>
+            </trans-unit>
+            <trans-unit id="text.investor_legal_entity.contacts.none">
+                <source>text.investor_legal_entity.contacts.none</source>
+                <target>Aucun contact pour le moment</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.status.limited_partner">
+                <source>investor_legal_entity.status.limited_partner</source>
+                <target>Limited Partner</target>
+            </trans-unit>
+            <trans-unit id="investor_legal_entity.status.prospect">
+                <source>investor_legal_entity.status.prospect</source>
+                <target>Prospect</target>
+            </trans-unit>
+            <trans-unit id="form.investorLegalEntity.details.label">
+                <source>form.investorLegalEntity.details.label</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="text.investorLegalEntity.details.shares.none">
+                <source>text.investorLegalEntity.details.shares.none</source>
+                <target>Aucune action pour le moment</target>
+            </trans-unit>
+            <trans-unit id="create.step2.header">
+                <source>create.step2.header</source>
+                <target>Compléter les informations liées au LP</target>
+            </trans-unit>
+            <trans-unit id="title.modal.legalentities">
+                <source>title.modal.legalentities</source>
+                <target>Véhicules</target>
+            </trans-unit>
+            <trans-unit id="ile.add.desc">
+                <source>ile.add.desc</source>
+                <target>Vous devez ajouter un autre véhicule dans lequel <![CDATA[<b>%investor.name%</b>]]> a investi :</target>
+            </trans-unit>
+            <trans-unit id="validator.investorLegalEntities.min">
+                <source>validator.investorLegalEntities.min</source>
+                <target>Ajoutez au moins un véhicule au LP</target>
+            </trans-unit>
+            <trans-unit id="ile.remove.header">
+                <source>ile.remove.header</source>
+                <target>Véhicules</target>
+            </trans-unit>
+            <trans-unit id="ile.remove.desc">
+                <source>ile.remove.desc</source>
+                <target>Êtes-vous certain de vouloir supprimer l'investissement dans le véhicule : <![CDATA[<b>%ile.legalEntity.name%</b>]]></target>
+            </trans-unit>
+            <trans-unit id="button.ile.remove.confirm">
+                <source>button.ile.remove.confirm</source>
+                <target>Oui, je confirme la suppression</target>
+            </trans-unit>
+            <trans-unit id="option.ile.add.select-one">
+                <source>option.ile.add.select-one</source>
+                <target>Sélectionnez un véhicule</target>
+            </trans-unit>
+            <trans-unit id="button.ile.delete">
+                <source>button.ile.delete</source>
+                <target>Supprimer l'investissement dans %legal_entity_name%</target>
+            </trans-unit>
+            <trans-unit id="investor.remove.confirm">
+                <source>investor.remove.confirm</source>
+                <target>Attention, êtes-vous sûr de vouloir supprimer le dernier investissement de %investor.name% dans le véhicule %ile.legalEntity.name% ?</target>
+            </trans-unit>
+            <trans-unit id="title.investor.general_infos">
+                <source>title.investor.general_infos</source>
+                <target>Informations générales</target>
+            </trans-unit>
+            <trans-unit id="label.fundraiser.feesAmount">
+                <source>label.fundraiser.feesAmount</source>
+                <target>Fees</target>
+            </trans-unit>
+            <trans-unit id="admin.bundle.name">
+                <source>admin.bundle.name</source>
+                <target>LPs</target>
+            </trans-unit>
+            <trans-unit id="title.table.ile.category">
+                <source>title.table.ile.category</source>
+                <target>Cat.</target>
+            </trans-unit>
+            <trans-unit id="title.table.ile.unitPrice">
+                <source>title.table.ile.unitPrice</source>
+                <target>Prix unit.</target>
+            </trans-unit>
+            <trans-unit id="title.table.ile.amount">
+                <source>title.table.ile.amount</source>
+                <target>Nombre</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

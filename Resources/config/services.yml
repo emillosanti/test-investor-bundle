@@ -1,0 +1,116 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $entities: '%sam_entities%'
+            $locale: '%locale%'
+
+    SAM\InvestorBundle\:
+        resource: '../../*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../{Entity,Repository,Tests}'
+
+    # EVENT LISTENERS
+    SAM\InvestorBundle\EventListener\InvestorListener:
+        tags:
+            - { name: doctrine.event_subscriber, event: prePersist, lazy: true }
+            - { name: doctrine.event_subscriber, event: postPersist, lazy: true }
+            - { name: doctrine.event_subscriber, event: postUpdate, lazy: true }
+            - { name: doctrine.event_subscriber, event: postRemove, lazy: true }
+
+    SAM\InvestorBundle\EventListener\InvestorLegalEntityListener:
+        tags:
+            - { name: doctrine.event_subscriber, event: postPersist, lazy: true }
+            - { name: doctrine.event_subscriber, event: postUpdate, lazy: true }
+            - { name: doctrine.event_subscriber, event: postRemove, lazy: true }
+
+    SAM\InvestorBundle\EventListener\InvestorLegalEntityDetailsListener:
+        tags:
+            - { name: doctrine.event_subscriber, event: postPersist, lazy: true }
+            - { name: doctrine.event_subscriber, event: postUpdate, lazy: true }
+            - { name: doctrine.event_subscriber, event: postRemove, lazy: true }
+
+    SAM\InvestorBundle\EventListener\DoctrineMappingListener:
+        arguments:
+            - '%sam_entities%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # FORM TYPES
+    sam_investor.InvestorSearchType:
+        class: SAM\InvestorBundle\Form\Type\InvestorSearchType
+        public: true
+        arguments:
+            $entities: '%sam_entities%'
+            $siteName: '%site_name%'
+            $locale: '%locale%'
+            $mobileDetector: '@mobile_detect.mobile_detector'
+            $enableEnhancedSearch: '%enable_algolia_search%'
+
+    sam_investor.InvestorType:
+        class: SAM\InvestorBundle\Form\Type\InvestorType
+        public: true
+        arguments: ['%sam_entities%', '@doctrine.orm.entity_manager']
+
+    sam_investor.InvestorLegalEntityType:
+        class: SAM\InvestorBundle\Form\Type\InvestorLegalEntityType
+        public: true
+        arguments: ['%sam_entities%', '%locale%']
+
+    sam_investor.InvestorMetricsType:
+        class: SAM\InvestorBundle\Form\Type\InvestorMetricsType
+        public: true
+        arguments:
+            $entities: '%sam_entities%'
+            $siteName: '%site_name%'
+
+    sam_investor.BoardCardChoiceType:
+        class: SAM\InvestorBundle\Form\Type\BoardCardChoiceType
+        public: true
+        arguments:
+            $entities: '%sam_entities%'
+
+    sam_investor.InvestorLegalEntityDetailsListType:
+            class: SAM\InvestorBundle\Form\Type\InvestorLegalEntityDetailsListType
+            public: true
+            arguments:
+                $entities: '%sam_entities%'
+
+    sam_investor.ShareCategory:
+        class: SAM\InvestorBundle\Form\Type\ShareCategoryType
+        public: true
+        arguments:
+            $entities: '%sam_entities%'
+
+    #SERIALIZERS / NORMALIZERS
+    sam_investor.investor_normalizer:
+        class: SAM\InvestorBundle\Serializer\InvestorNormalizer
+        tags:
+            - { name: serializer.normalizer }
+    sam_investor.investor_legal_entity_normalizer:
+        class: SAM\InvestorBundle\Serializer\InvestorLegalEntityNormalizer
+        tags:
+            - { name: serializer.normalizer }
+    sam_investor.investor_legal_entity_details_normalizer:
+        class: SAM\InvestorBundle\Serializer\InvestorLegalEntityDetailsNormalizer
+        tags:
+            - { name: serializer.normalizer }
+    sam_investor.investor_step_normalizer:
+        class: SAM\InvestorBundle\Serializer\InvestorStepNormalizer
+        tags:
+            - { name: serializer.normalizer }
+    sam_investor.share_category_normalizer:
+        class: SAM\InvestorBundle\Serializer\ShareCategoryNormalizer
+        tags:
+            - { name: serializer.normalizer }
+    sam_investor.board_normalizer:
+        class: SAM\InvestorBundle\Serializer\BoardNormalizer
+        tags:
+            - { name: serializer.normalizer }
+    sam_investor.investor_step_update_normalizer:
+        class: SAM\InvestorBundle\Serializer\InvestorStepUpdateNormalizer
+        tags:
+            - { name: serializer.normalizer }

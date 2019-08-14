@@ -1,0 +1,98 @@
+{% extends "@SAMCommon/Layout/_metrics_layout.html.twig" %}
+
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% form_theme form '@SAMCommon/Form/theme.html.twig' %}
+
+{% block search_form %}
+    {{ form_start(form, {attr:{class: 'metrics-form investor-statistics'}}) }}
+    <div class="search-main-container">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 search-item">
+                {{ form_label(form.user) }}
+                {{ form_widget(form.user) }}
+            </div>
+
+            <div class="col-sm-3 col-md-2 search-item">
+                {{ form_label(form.investorCategory) }}
+                {{ form_widget(form.investorCategory) }}
+            </div>
+            <div class="col-sm-3 col-md-2 search-item">
+                {{ form_label(form.hasFundraiser) }}
+                {{ form_widget(form.hasFundraiser) }}
+            </div>
+            <div class="col-sm-3 col-md-2 search-item">
+                {% include "@SAMCommon/Widget/min_max.html.twig" with {form: form.totalInvestmentAmount, addInfinity: true} %}
+            </div>
+            <div class="col-md-offset-2 col-sm-2 col-md-2 text-right search-item">
+                <a href="{{ path('metrics_investors_export') }}" class="export-metrics btn btn-primary">Export Excel</a>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form, {render_rest: false}) }}
+{% endblock %}
+
+{% block metrics_content %}
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <section class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ 'title.investor.total_investment_chart'|trans() }}</h4>
+                    <hr />
+                </div>
+                <div class="panel-body">
+                    {% if metrics.total_investment_amount|length %}
+                        <div class="chart-wrapper"><canvas class="deals-metrics-chart investment-amount-chart" data-type="doughnut" data-key="total_investment_amount" data-chart-data="{{ metrics.total_investment_amount|json_encode }}"></canvas></div>
+                    {% else %}
+                        <p class="text-center">{{ 'placeholder.investor.chart_no_result' |trans() }}</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <section class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ 'title.investor.investor_category'|trans() }}</h4>
+                    <hr />
+                </div>
+                <div class="panel-body">
+                    {% if metrics.investor_category|length %}
+                        <div class="chart-wrapper"><canvas class="deals-metrics-chart investor-category-chart" data-type="doughnut" data-key="investor_category" data-chart-data="{{ metrics.investor_category|json_encode }}"></canvas></div>
+                    {% else %}
+                        <p class="text-center">{{ 'placeholder.investor.chart_no_result' |trans() }}</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <section class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ 'title.investor.investor_legal_entity' |trans() }}</h4>
+                    <hr />
+                </div>
+                <div class="panel-body">
+                    {% if metrics.investor_legal_entity|length %}
+                        <div class="chart-wrapper"><canvas class="deals-metrics-chart investor-legal-entity-chart" data-type="doughnut" data-key="investor_legal_entity" data-chart-data="{{ metrics.investor_legal_entity|json_encode }}"></canvas></div>
+                    {% else %}
+                        <p class="text-center">{{ 'placeholder.investor.chart_no_result' |trans() }}</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+        <div class="col-sm-12">
+            <section class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ 'title.investor.investor_by_fundraiser' |trans() }}</h4>
+                    <hr />
+                </div>
+                <div class="panel-body">
+                    {% if metrics.investor_with_fundraiser|length %}
+                        <div class="chart-wrapper"><canvas class="deals-metrics-chart investor-fundraiser-chart" data-type="bar" data-key="investor_with_fundraiser" data-label="{{ 'label.fundraiser.feesAmount'|trans() }}" data-is-currency="true" data-currency-suffix="k€" data-monochromatic="false" data-show-percentage="false" data-legend="hide" data-chart-data="{{ metrics.investor_with_fundraiser|json_encode }}"></canvas></div>
+                    {% else %}
+                        <p class="text-center">{{ 'placeholder.investor.chart_no_result' |trans() }}</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

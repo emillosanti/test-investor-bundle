@@ -1,0 +1,30 @@
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+<div class="modal fade" id="ile-add-modal" role="dialog">
+    <form id="ile-add" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{{ 'vehicles'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{ "ile.add.desc"|trans({'%investor.name%': investor.name})|raw }}</p>
+
+                <select required name="legal-entity" class="form-control">
+                    <option value="" checked="checked">{{ 'option.ile.add.select-one'|trans }}</option>
+                    {% for investorLegalEntity in investor.investorLegalEntities %}
+                        {% if investorLegalEntity.legalEntity.isInvestmentVehicule and investorLegalEntity.id is null %}
+                            <option value="{{ investorLegalEntity.legalEntity.getId() }}">{{ investorLegalEntity.legalEntity.getName() }} {% if investorLegalEntity.legalEntity.fundsRaised > 0 %}({{ (investorLegalEntity.legalEntity.fundsRaised/1000)|format_number() }}){% endif %}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">{{ 'save'|trans({}, 'SAMCommonBundle') }}</button>
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ 'cancel'|trans({}, 'SAMCommonBundle') }}</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,46 @@
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+<div id="investor" role="tabpanel" class="tab-pane active">
+    <div class="row">
+        <div class="col-md-5 col-xs-12">
+            <section class="panel">
+                <div class="panel-heading">
+                    <h4>{{ 'header.info.general'|trans({}, 'SAMCommonBundle') }}</h4>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="panel-body">
+                            {{ form_row(form.category) }}
+
+                            {# @TODO could be moved to form rendering if needs for other pages #}
+                            {# unchangable field, presented as field just for the right design #}
+                            <div class="form-group">
+                                {{ form_label(form.type) }}
+                                <select id="investor_type" name="investor[type]" readonly="readonly" class="form-control">
+                                    <option value="{{ investor.type }}">{{ investor.getTypeAsString()|trans }}
+                                </select>
+                            </div>
+
+                            {% if investor.isContact() %}
+                                <p>{{ 'form.isTaxBenefitActivated.header'|trans }}</p>
+                                {{ form_row(form.isTaxBenefitActivated) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-7 col-xs-12">
+            <section class="panel">
+                {% if investor.isCompany() %}
+                    {% include "@SAMInvestor/Investor/edit/form/_company.html.twig" %}
+                {% else %}
+                    {% include "@SAMInvestor/Investor/edit/form/_contact.html.twig" %}
+                {% endif %}
+            </section>
+        </div>
+    </div>
+
+    {% include "@SAMInvestor/Investor/edit/_footer.html.twig" with { investor: investor } %}
+</div>

@@ -1,0 +1,36 @@
+{% extends "@SAMCommon/Layout/_one_column_layout.html.twig" %}
+
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% form_theme form '@SAMCommon/Form/theme.html.twig' '@SAMInvestor/Form/theme.html.twig' %}
+
+{% block meta_title %}{{ investor.name }} | {{ site_name }}{% endblock %}
+
+{% block main_action_buttons %}{% include "@SAMInvestor/Global/main_action_button.html.twig" %}{% endblock %}
+
+{% block page_content %}
+    <div class="show-investor">
+        {% include '@SAMInvestor/Investor/_header.html.twig' with {investor: investor, editMode: true} %}
+        {% block flashs %}{% include "@SAMCommon/flash-messages.hml.twig" %}{% endblock %}
+
+        <section class="tabbed-panel content-tabbed-panel push-100">
+            {% include "@SAMInvestor/Investor/edit/_navigation.html.twig" with { form: form } %}
+            {{ form_start(form, {attr:{class:"investor-main-form investor-edit-form", 'novalidate': 'novalidate'}}) }}
+            {{ form_errors(form) }}
+
+            <div class="tab-content">
+                {% include "@SAMInvestor/Investor/edit/form/_investor.html.twig" with { investor: investor } %}
+                {% include "@SAMInvestor/Investor/_ile.html.twig" with { form: form } %}
+            </div>
+
+            {{ form_row(form._token) }}
+            {{ form_end(form, {'render_rest': false}) }}
+        </section>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% include "@SAMInvestor/Investor/_ile-add-modal.html.twig" with { investor: investor } %}
+    {% include "@SAMInvestor/Investor/_ile-remove-modals.html.twig" with { investor: investor } %}
+    {{ parent() }}
+{% endblock %}

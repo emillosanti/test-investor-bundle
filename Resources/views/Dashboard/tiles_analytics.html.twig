@@ -1,0 +1,28 @@
+<div class="panel tiles">
+    <div class="panel-heading">
+        <h4>LPs</h4>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="panel-body">
+                <ul class="metrics-list">
+                    <li class="metric-item">
+                        <div class="metric-title">LPs</div>
+                        <div class="metric-value">{{ allCount }}</div>
+                    </li>
+                    <li class="metric-item">
+                        <div class="metric-title">Mes LPs</div>
+                        <div class="metric-value">{{ myCount }}</div>
+                    </li>
+                    <li class="metric-item">
+                        <div class="metric-title">Montant total</div>
+                        <div class="metric-value">{{ totalAmount|format_number('k€') }}</div>
+                    </li>
+                </ul>
+                <div class="progression">
+                    <span>&nbsp;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+investor_bundle:
+     resource: '@SAMInvestorBundle/Controller/'
+     type: annotation

@@ -1,0 +1,94 @@
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% if investorLegalEntities|length > 0 %}
+    <div class="row">
+        <div class="col-sm-12 table-responsive">
+            <table class="list-table investor-table table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th width="150">Investisseur</th>
+                        <th width="120">Véhicule</th>
+                        <th width="80">Closing</th>
+                        <th width="130">Catégorie</th>
+                        <th width="100" class="text-center">Ticket <small>(k€)</small></th>
+                        <th width="100">Catégorie Sourcing</th>
+                        <th width="80">Fees</th>
+                        <th width="100">Comité</th>
+                        <th width="200">Contact principal</th>
+                        <th>Notes</th>
+                        <th width="55"><i class="fa fa-users"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set currentCategory = null %}
+                    {% for index, investorLegalEntity in investorLegalEntities if investorLegalEntity.id is defined %}
+                        {% set investor = investorLegalEntity.investor %}
+                        <tr>
+                            {% if currentCategory is null or currentCategory.id != investor.category.id %}
+                                {% set currentCategory = investor.category %}
+                                {% set nbSameCategories = 0 %}
+                                {% set tmp = investorLegalEntities.items[index:] %}
+                                    {% for nextInvestorLegalEntity in tmp %}
+                                        {% set nextInvestor = nextInvestorLegalEntity.investor %} 
+                                        {% if nextInvestor.category.id == investor.category.id %}
+                                            {% set nbSameCategories = nbSameCategories + 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="step-name" rowspan="{{ nbSameCategories }}">
+                                        <div class="step-name-wrapper">
+                                            <div class="step-name__inner">
+                                                <div style="background:{{ investor.category.backgroundColor }};" class="step-name__content">
+                                                    <span>{{ investor.category.name }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                            {% endif %}
+                            <td><a href="{{ path('investor_show', {'investor': investor.id}) }}#legal_entity_{{ investorLegalEntity.legalEntity.id }}"><strong>{{ investor.name }}</strong></a></td>
+                            <td>{{ investorLegalEntity.legalEntity.name }}</td>
+                            <td>
+                                {% if investorLegalEntity.closing > 0 %}
+                                    {{ investorLegalEntity.closing|localizednumber('ordinal') }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>{{ investor.category }}<br><small>{{ investor.getTypeAsString|trans }}</small></td>
+                            <td>{{ investorLegalEntity.investmentAmount|format_number('k€') }}<br><small>{{ investorLegalEntity.investmentPercentage|format_number('%') }}</small></td>
+                            <td>{% if investorLegalEntity.sourcing and investorLegalEntity.sourcing.category %}{{ investorLegalEntity.sourcing.category.name }}{% else %}N/A{% endif %}</td>
+                            <td>{% if investorLegalEntity.fundraiser %}{{ investorLegalEntity.fundraiser.feesAmount|format_number('k€') }}<br><small>{{ investorLegalEntity.fundraiser.feesPercentage|format_number('%') }}</small>{% else %}-{% endif %}</td>
+                            <td>{% for board in investor.boards %}
+                                    {{ board.name }}{% if not loop.last %}, {% endif %}
+                                {% else %}
+                                    -
+                                {% endfor %}
+                            </td> 
+                            <td>
+                                {% if investorLegalEntity.contactPrimary %}
+                                <a href="{{ investorLegalEntity.contactPrimary|profileUrl }}" class="open-side-panel"><strong>{{ investorLegalEntity.contactPrimary.fullName }}</strong><br>{{ investorLegalEntity.contactPrimary.job }}</a><br>
+                                {% if investorLegalEntity.contactPrimary.firstPhone %}
+                                    <span class="investor-phone"><a href="tel:{{ investorLegalEntity.contactPrimary.firstPhone.fullNumber }}">{{ investorLegalEntity.contactPrimary.firstPhone|formatPhone }}</a></span>
+                                {% endif %}
+                                {% if investorLegalEntity.contactPrimary.firstEmail %}<span class="investor-mail"><a href="mailto:{{ investorLegalEntity.contactPrimary.firstEmail }}"><i class="fa fa-envelope"></i></a></span>{% endif %}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            {% set lastNote = investorLegalEntity|get_last_note_interaction %}
+                            <td>{% if lastNote %}{{ lastNote.content|nl2br }}{% else %}N/A{% endif %}</td>
+                            <td>{% for user in investorLegalEntity.users %}<img class="user-picture" src="{{ user|picture({'imagineFilter': 'user_contact_thumb_sm'}) }}" alt="{{ user.fullName }}" title="{{ user.fullName }}"/>{% endfor %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ knp_pagination_render(investorLegalEntities) }}
+        </div>
+    </div>
+{% else %}
+    {% include "@SAMCommon/Search/no-result.html.twig" %}
+{% endif %}

@@ -1,0 +1,439 @@
+{% extends "@SAMCommon/Layout/_one_column_layout.html.twig" %}
+
+{% form_theme form '@SAMCommon/Form/theme.html.twig' '@SAMInvestor/Form/theme.html.twig' %}
+
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% block meta_title %}{{ investor.name }} | {{ site_name }}{% endblock %}
+
+{% block main_action_buttons %}{% include "@SAMInvestor/Global/main_action_button.html.twig" %}{% endblock %}
+
+{% block page_content %}
+    {# @TODO refactor css class #}
+    <div class="show-investor investor-form show-deal-flow deal-flow-form">
+        {# {{ form_start(form, {attr:{class:"deal-flow-main-form"}}) }} #}
+        {% include '@SAMInvestor/Investor/_header.html.twig' with {investor: investor, editMode: false} %}
+
+        {% spaceless %}
+            <div class="row deal-steps-wrapper">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-12 kpis-wrapper">
+                            <section class="panel panel-inline-block">
+                                <div class="panel-body panel-body-clean">
+                                    <div class="kpi-content investor-last-interaction">
+                                        <div class="big-text">{% if investor.interactedAt %}
+                                                {{ investor.interactedAt|localizeddate('short', 'none') }}
+                                            {% else %}
+                                                ---
+                                            {% endif %}
+                                        </div>
+                                        <span class="text-muted">Dernier contact</span>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="panel panel-inline-block">
+                                <div class="panel-body panel-body-clean">
+                                    <div class="kpi-content investor-total-amount">
+                                        <div class="big-text">
+                                            {{ investor.totalInvestmentAmount|format_number('k€') }}
+                                        </div>
+                                        <span class="text-muted">Investissement total</span>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="panel panel-inline-block">
+                                <div class="panel-body panel-body-clean">
+                                    <div class="kpi-content investor-category">
+                                        <div class="big-text">{{ investor.category }}</div>
+                                        <span class="text-muted">Catégorie</span>
+                                    </div>
+                                </div>
+                            </section>
+                            {% if investor.boards|length %}
+                            <section class="panel panel-inline-block">
+                                <div class="panel-body panel-body-clean">
+                                    <div class="kpi-content deal-cancel-status">
+                                        <div class="big-text">
+                                            {% for board in investor.boards %}
+                                                {{ board.name }}{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <span class="text-muted">{% transchoice investor.boards|length %}{1}Comité|]1,Inf[Comités{% endtranschoice %}</span>
+                                    </div>
+                                </div>
+                            </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endspaceless %}
+        {% block flashs %}
+            {% include "@SAMCommon/flash-messages.hml.twig" %}
+        {% endblock %}
+
+        <section class="tabbed-panel content-tabbed-panel">
+            <ul id="legal-entities-tabs" class="nav nav-tabs hashed" role="tablist">
+                {% for investorLegalEntity in investor.investorLegalEntities %}
+                    <li role="presentation"{% if loop.first %} class="active"{% endif %}>
+                        <a data-target="#legal_entity_{{ investorLegalEntity.legalEntity.id }}" aria-controls="{{ investorLegalEntity.legalEntity.name }}" role="tab" data-toggle="tab">{{ investorLegalEntity.legalEntity.name }}{% if investorLegalEntity.legalEntity.fundsRaised > 0 %} ({{ (investorLegalEntity.legalEntity.fundsRaised/1000)|format_number() }}){% endif %}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content">
+                {% for investorLegalEntity in investor.investorLegalEntities %}
+                    <div role="tabpanel" class="tab-pane fade{% if loop.first %} in active{% endif %}" id="legal_entity_{{ investorLegalEntity.legalEntity.id }}">
+                        <div class="row">
+                            <div class="col-md-9 col-xs-12">
+                                <div class="row">
+                                    <div class="col-lg-6 col-xs-12">
+                                        <section class="panel">
+                                            <div class="panel-heading">
+                                                <h4>{{'title.investor.general_infos'|trans}}</h4>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    <div class="panel-body">
+                                                        <h5>{{'title.investor_legal_entity.investment'|trans}}</h5>
+                                                        <p>{{ investorLegalEntity.investmentAmount|format_number('k€') }} (soit {{ investorLegalEntity.investmentPercentage|format_number('%') }} des {{ (investorLegalEntity.legalEntity.fundsRaised / 1000)|format_number() }} du véhicule)</p>
+
+                                                        <h5>{{'title.investor_legal_entity.fundraiser'|trans}}</h5>
+                                                        <p>
+                                                            {% if investorLegalEntity.fundraiser %}
+                                                                {% if investorLegalEntity.fundraiser.company %}<a href="{{ path('edit_company', {company: investorLegalEntity.fundraiser.company.id}) }}">{{ investorLegalEntity.fundraiser.company.name }}</a>{% endif %}{% if investorLegalEntity.fundraiser.contact %} - <a href="{{ investorLegalEntity.fundraiser.contact|profileUrl }}" class="open-side-panel">{{ investorLegalEntity.fundraiser.contact.fullname }}</a>{% endif %}
+                                                                ({{ 'text.investor_legal_entity.fundraiser'|trans({'%percentage%': investorLegalEntity.fundraiser.feesPercentage|format_number('%'), '%amount%': investorLegalEntity.fundraiser.feesAmount|format_number('k€') }) }})
+                                                            {% else %}
+                                                                {{'text.investor_legal_entity.fundraiser.none'|trans}}
+                                                            {% endif %}
+                                                        </p>
+
+                                                        <h5>{{ 'title.investor_legal_entity.boards'|transchoice(investorLegalEntity.boards|length) }}</h5>
+                                                        <p>
+                                                            {% for board in investorLegalEntity.boards %}
+                                                                {{ board.name }}{% if not loop.last %}, {% endif %}
+                                                            {% else %}
+                                                                {{'text.investor_legal_entity.boards.none'|trans}}
+                                                            {% endfor %}
+                                                        </p>
+
+                                                        <p></p>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <h5>{{'title.investor_legal_entity.warrant_signed_at'|trans}}</h5>
+                                                                <p>{% if investorLegalEntity.warrantSignedAt %}{{ investorLegalEntity.warrantSignedAt|localizeddate('short', 'none') }}{% else %}Non signé{% endif %}</p>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <h5>{{'title.investor_legal_entity.closing'|trans}}</h5>
+                                                                <p>{% if investorLegalEntity.closing > 0 %}{{ investorLegalEntity.closing|localizednumber('ordinal') }}{% else %}N/A{% endif %}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-lg-6 col-xs-12">
+                                        <section class="panel">
+                                            <div class="panel-heading">
+                                                <h4>{{'title.investor_legal_entity.details.shares'|trans}}</h4>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    {% if investorLegalEntity.details|length %}
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{'title.investor_legal_entity.details.shares.category'|trans}}</th>
+                                                                <th>{{'title.investor_legal_entity.details.shares.unit_price'|trans}}</th>
+                                                                <th>{{'title.investor_legal_entity.details.shares.amount'|trans}}</th>
+                                                                <th>{{'title.investor_legal_entity.details.shares.total'|trans}}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% set totalAmount = 0 %}
+                                                            {% set totalInvestment = 0 %}
+                                                            {% for share in investorLegalEntity.details %}
+                                                                {% set totalAmount = totalAmount + share.amount %}
+                                                                {% set totalInvestment = totalInvestment + (share.shareCategory.unitPrice * share.amount / 1000) %}
+                                                                <tr>
+                                                                    <td>{{ share.shareCategory.name }}</td>
+                                                                    <td>{{ share.shareCategory.unitPrice|format_number('€') }}</td>
+                                                                    <td>{{ share.amount|format_number('') }}</td>
+                                                                    <td><strong>{{ (share.shareCategory.unitPrice * share.amount / 1000)|format_number('k€') }}</strong></td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            <tr class="total-row">
+                                                                <td><strong>{{'title.investor_legal_entity.details.shares.total'|trans}}</strong></td>
+                                                                <td></td>
+                                                                <td>{{ totalAmount|format_number('') }}</td>
+                                                                <td>{{ totalInvestment|format_number('k€') }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {% else %}
+                                                        <div class="alert alert-info">
+                                                            {{'text.investor_legal_entity.details.shares.none'|trans}}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        <section class="panel">
+                                            <div class="panel-heading">
+                                                <h4>{{ 'title.interactions.notes'|trans({}, 'SAMCommonBundle') }} {% if investorLegalEntity|get_interactions|length > 0 %}<a href="#" class="btn btn-muted btn-sm pull-right interaction-form-toggle">{{ 'button.interactions.new'|trans({}, 'SAMCommonBundle') }}</a>{% endif %}</h4>
+                                            </div>
+
+                                            <div class="card interaction-form{% if investorLegalEntity|get_interactions|length > 0 %} hidden{% endif %}">
+                                                <div class="card-content">
+                                                    <div class="panel-body panel-body-clean">
+                                                        <div class="tabbed-panel">
+                                                            <ul class="nav nav-tabs" role="tablist">
+                                                                <li role="presentation" class="active">
+                                                                    <a href="#note" role="tab" data-toggle="tab"><i class="icon-pin"></i>{{ 'title.interactions.new.note'|trans({}, 'SAMCommonBundle') }}</a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a href="#email" role="tab" data-toggle="tab"><i class="icon-envelope"></i> {{ 'title.interactions.new.mail'|trans({}, 'SAMCommonBundle') }}</a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a href="#phone" role="tab" data-toggle="tab"><i class="icon-phone"></i> {{ 'title.interactions.new.phone'|trans({}, 'SAMCommonBundle') }}</a></a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a href="#letter" role="tab" data-toggle="tab"><i class="icon-mailbox"></i> {{ 'title.interactions.new.letter'|trans({}, 'SAMCommonBundle') }}</a></a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a href="#appointment" role="tab" data-toggle="tab"><i class="icon-calendar"></i> {{ 'title.interactions.new.appointment'|trans({}, 'SAMCommonBundle') }}</a></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="tab-content">
+                                                            <div role="tabpanel" class="tab-pane active" id="note">
+                                                                {{ render(controller('SAM\CommonBundle:Interaction:noteCreate', {entity: 'investor_legal_entity',  id: investorLegalEntity.id})) }}
+                                                            </div>
+                                                            <div role="tabpanel" class="tab-pane" id="email">
+                                                                {{ render(controller('SAM\CommonBundle:Interaction:emailCreate', {entity: 'investor_legal_entity',  id: investorLegalEntity.id})) }}
+                                                            </div>
+                                                            <div role="tabpanel" class="tab-pane" id="phone">
+                                                                {{ render(controller('SAM\CommonBundle:Interaction:callCreate', {entity: 'investor_legal_entity',  id: investorLegalEntity.id})) }}
+                                                            </div>
+                                                            <div role="tabpanel" class="tab-pane" id="letter">
+                                                                {{ render(controller('SAM\CommonBundle:Interaction:letterCreate', {entity: 'investor_legal_entity',  id: investorLegalEntity.id})) }}
+                                                            </div>
+                                                            <div role="tabpanel" class="tab-pane" id="appointment">
+                                                                {{ render(controller('SAM\CommonBundle:Interaction:appointmentCreate', {entity: 'investor_legal_entity',  id: investorLegalEntity.id})) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <div class="row row-eq-height interactions">
+                                            {% for interaction in investorLegalEntity|get_interactions %}
+                                                {% if interaction is instanceof('AppBundle\\Entity\\InteractionNote') %}
+                                                    {% include "@SAMCommon/Interaction/_note.html.twig" with {interaction: interaction, entity: 'investor_legal_entity', entityId: investorLegalEntity.id} %}
+                                                {% elseif interaction is instanceof('AppBundle\\Entity\\InteractionEmail') %}
+                                                    {% include "@SAMCommon/Interaction/_email.html.twig" with {interaction: interaction, entity: 'investor_legal_entity', entityId: investorLegalEntity.id} %}
+                                                {% elseif interaction is instanceof('AppBundle\\Entity\\InteractionCall') %}
+                                                    {% include "@SAMCommon/Interaction/_call.html.twig" with {interaction: interaction, entity: 'investor_legal_entity', entityId: investorLegalEntity.id} %}
+                                                {% elseif interaction is instanceof('AppBundle\\Entity\\InteractionLetter') %}
+                                                    {% include "@SAMCommon/Interaction/_letter.html.twig" with {interaction: interaction, entity: 'investor_legal_entity', entityId: investorLegalEntity.id} %}
+                                                {% elseif interaction is instanceof('AppBundle\\Entity\\InteractionAppointment') %}
+                                                    {% include "@SAMCommon/Interaction/_appointment.html.twig" with {interaction: interaction, entity: 'investor_legal_entity', entityId: investorLegalEntity.id} %}
+                                                {% endif %}
+                                            {% else %}
+                                                <div class="col-xs-12">
+                                                    <div class="alert alert-info">{{ 'text.interactions.none'|trans({}, 'SAMCommonBundle') }}</div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        {% include "@SAMCommon/Document/_documents_view.html.twig" with {
+                                            categories: documentCategories,
+                                            documents: investorLegalEntity.documents,
+                                            entity: 'investor_legal_entity',
+                                            entityId: investorLegalEntity.id
+                                        }%}
+                                    </div>
+                                </div>
+
+                                {# <div class="row">
+                                    <div class="col-md-6 col-xs-12">
+                                        <section class="panel">
+                                            <div class="panel-heading">
+                                                <h4>Libérations</h4>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    {% if investorLegalEntity.provisions|length %}
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Libéré</th>
+                                                                <th>Montant</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% set totalPercentRelease = 0 %}
+                                                            {% set totalAmount = 0 %}
+                                                            {% for provision in investorLegalEntity.provisions %}
+                                                                {% set totalPercentRelease = totalPercentRelease + provision.percentRelease %}
+                                                                {% set totalAmount = totalAmount + (investorLegalEntity.investmentAmount * provision.percentRelease / 100) %}
+                                                                <tr>
+                                                                    <td>{{ provision.createdAt|localizeddate('short', 'none') }}</td>
+                                                                    <td>{{ provision.percentRelease }}%</td>
+                                                                    <td>{{ (investorLegalEntity.investmentAmount * provision.percentRelease / 100)|format_number('k€') }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            <tr class="total-row">
+                                                                <td><strong>Total</strong></td>
+                                                                <td>{{ totalPercentRelease }}%</td>
+                                                                <td>{{ totalAmount|format_number('k€') }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {% else %}
+                                                        <div class="alert alert-info">
+                                                            Aucune libération pour le moment
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div> #}
+
+                            </div>
+                            <div class="col-md-3 col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <section class="panel">
+                                            <div class="panel-heading">
+                                                <h4>{{'title.investor_legal_entity.contacts'|transchoice(investorLegalEntity.contacts|filterMerged|length)}}</h4>
+                                            </div>
+                                            {% for contact in investorLegalEntity.contacts|filterMerged %}
+                                                {% include '@SAMAddressBook/Contact/_contact_mini_card.html.twig' with { contact: contact, isActive: investorLegalEntity.contactPrimary ? investorLegalEntity.contactPrimary.id == contact.id : false } %}
+                                            {% else %}
+                                                <p>{{'text.investor_legal_entity.contacts.none'|trans}}</p>
+                                            {% endfor %}
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <section class="panel contact-item">
+                                            <div class="panel-heading">
+                                                <h4>{{ 'title.investor_legal_entity.sourcing'|trans }}</h4>
+                                            </div>
+                                            {% if investorLegalEntity.sourcing %}
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <h5>{{ 'investor_legal_entity.sourcing.category.title'|trans }}</h5>
+                                                                {% set sourcingContact = investorLegalEntity.sourcing.contact %}
+                                                                {% set canViewSourcingContact = is_granted(constant('SAM\\AddressBookBundle\\Security\\ContactVoter::VIEW'), sourcingContact) %}
+                                                                {% if investorLegalEntity.sourcing and investorLegalEntity.sourcing.category %}
+                                                                    <span class="btn btn-primary btn-sm">{{ investorLegalEntity.sourcing.category }}</span>
+                                                                {% else %}
+                                                                    {{ 'investor_legal_entity.sourcing.category.none'|trans }}
+                                                                {% endif %}
+                                                                <p>&nbsp;</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row contact-infos">
+                                                            <div class="col-xs-12">
+                                                                <div class="row contact-item-row">
+                                                                    <div class="col-xs-12">
+                                                                        {% if sourcingContact %}
+                                                                            {% include '@SAMAddressBook/Contact/_contact_mini_card_clean.html.twig' with {contact: sourcingContact} %}
+                                                                            <p>&nbsp;</p>
+                                                                            <div class="row">
+                                                                                <div class="contact-item-datas col-xs-12">
+                                                                                    <div class="row">
+                                                                                        <div class="col-xs-12">
+                                                                                            {% if canViewSourcingContact %}
+                                                                                            <ul class="contact-emails list-unstyled">
+                                                                                                {% if sourcingContact.phones is defined and sourcingContact.phones|length > 0 %}
+                                                                                                    {% for phone in sourcingContact.phones %}
+                                                                                                        <li class="contact-phone"><i class="{{ phone|phoneIcon }}"></i> <a href="tel:{{ phone.fullNumber }}">{{ phone|formatPhone }}</a></li>
+                                                                                                    {% endfor %}
+                                                                                                {% endif %}
+                                                                                                {% if sourcingContact.emails is defined and sourcingContact.emails|length > 0 %}
+                                                                                                    {% for email in sourcingContact.emails %}
+                                                                                                        <li class="contact-email"><i class="fa fa-envelope"></i> <a href="mailto:{{ email.email }}">{{ email.email }}</a></li>
+                                                                                                    {% endfor %}
+                                                                                                {% endif %}
+                                                                                            </ul>
+                                                                                            {% else %}
+                                                                                                <a href="{{ path('get_contact', {id: sourcingContact.id}) }}" class="open-side-panel btn btn-success btn-sm"><i class="icon-lock"></i> Demander l'accès</a>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% elseif investor.sourcing.company %}
+                                                                            {% include '@SAMAddressBook/Company/_company_mini_card_clean.html.twig' with {company: investor.sourcing.company} %}
+                                                                        {% else %}
+                                                                            {{'investor_legal_entity.sourcing.contact.none'|trans}}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% else %}
+                                                <div class="alert alert-info">
+                                                    {{'investor_legal_entity.sourcing.none'|trans}}
+                                                </div>
+                                            {% endif %}
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <section class="panel">
+                                            <div class="panel-heading">
+                                                <h4>{{ 'investor_legal_entity.team.title'|trans }}</h4>
+                                            </div>
+                                            {% for user in investorLegalEntity.users %}
+                                                {% include '@SAMCommon/User/_user_mini_card.html.twig' with { user:user } %}
+                                            {% else %}
+                                                <div class="alert alert-info">
+                                                    {{'investor_legal_entity.team.none'|trans}}
+                                                </div>
+                                            {% endfor %}
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="{{ dropbox_api_key }}"></script>
+    {{ parent() }}
+{% endblock %}

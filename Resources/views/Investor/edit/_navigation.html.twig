@@ -1,0 +1,19 @@
+{% trans_default_domain 'SAMCommonBundle' %}
+
+{% set mainForm = form %}
+<ul id="legal-entities-tabs" class="nav nav-tabs hashed" role="tablist">
+    <li class="pull-right">
+        <buton class="btn btn-success" data-toggle="modal" data-target="#ile-add-modal">Ajouter un vehicule</buton>
+    </li>
+    <li id="investor-tab" class="active">
+        <a href="#investor">{{ 'header.info.general'|trans }}</a>
+    </li>
+    {% for form in form.investorLegalEntities %}
+        {% set investorLegalEntity = form.vars.value %}
+        <li
+            data-id="{{ investorLegalEntity.legalEntity.id }}"
+            class="{% if investorLegalEntity.id is null and mainForm.vars.valid %}hidden{% endif %}">
+            <a href="#legal_entity_{{ investorLegalEntity.legalEntity.id }}">{{ investorLegalEntity.legalEntity.name }} ({{ (investorLegalEntity.legalEntity.fundsRaised/1000)|format_number() }})</a>
+        </li>
+    {% endfor %}
+</ul>

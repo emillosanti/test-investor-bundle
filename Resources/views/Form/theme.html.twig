@@ -1,0 +1,315 @@
+{% extends "@SAMCommon/Form/theme.html.twig" %}
+
+{% block _investor_search_myInvestor_widget %}
+    {% spaceless %}
+        <ul class="result-tab-selector">
+            {% for child in form %}
+                <li>{{ form_row(child, {myInvestorsCount: myInvestorsCount, allInvestorsCount: allInvestorsCount}) }}</li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_search_myInvestor_entry_row %}
+    <input
+            type="radio"
+            name="{{ form.vars.full_name }}"
+            id="{{ form.vars.id }}"
+            {% if form.vars.checked %}checked="checked"{% endif %}
+            {% if form.vars.value is defined %}value="{{ value }}"{% endif %}
+    />
+    <label for="{{ form.vars.id }}">{{ form.vars.label }} ({{ form.vars.value ? myInvestorsCount : allInvestorsCount }})</label>
+{% endblock %}
+
+{% block _investor_contactMerged_emails_entry_widget %}
+    {% spaceless %}
+        {% set type = (form.vars.data) ? form.vars.data.type : "__type__" %}
+        {% set typeLabel = (form.vars.data) ? form.vars.data.typeAsString : "__type_label__" %}
+        {% set email = (form.vars.data) ? form.vars.data.email : "__email__" %}
+        <li data-key="{{ form.vars.name }}" data-type="{{ type }}">
+            <div class="form-group">
+                <label>{{ typeLabel }}</label>
+                <div class="input-group">
+                    <input type="email" class="form-control" name="investor[contactMerged][emails][{{ form.vars.name }}][email]" value="{{ email }}"/>
+                    <a class="remove-email input-group-addon input-group-addon-primary">X</a>
+                </div>
+                <input class="excluded" type="hidden" name="investor[contactMerged][emails][{{ form.vars.name }}][type]" value="{{ type }}"/>
+            </div>
+        </li>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_investorLegalEntities_entry_details_row %}
+    {% spaceless %}
+        <div class="ile-details-form collection-container">
+            <div class="sub-form" style="display: block">
+                <h5>{{ form.vars.label|trans({}, form.vars.translation_domain) }}</h5>
+                {{ form_errors(form) }}
+                <div class="ile-details-add form-group row">
+                    <div class="col-sm-5">
+                        <label>{{ 'category'|trans({}, 'SAMCommonBundle') }}</label>
+                        <select class="category form-control novalidate" required="required">
+                            <option value="">{{ 'category'|trans({}, 'SAMCommonBundle') }}</option>
+                            {% for choice in form.vars.prototype.children.shareCategory.vars.choices %}
+                                <option value="{{ choice.value }}" data-name="{{ choice.data.name ? choice.data.name : choice.label }}" data-unit-price="{{ choice.data.unitPrice|format_number('€') }}" {{ choice.value == form.vars.prototype.children.shareCategory.vars.data ? 'selected' }}>{{ choice.data.name ? choice.data : choice.label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <label>{{ 'amount'|trans({}, 'SAMCommonBundle') }}</label>
+                        <input type="number" min="0" class="form-control novalidate amount" required="required" placeholder="{{ 'amount'|trans({}, 'SAMCommonBundle') }}" />
+                    </div>
+                    <div class="col-sm-2">
+                        <label>&nbsp;</label>
+                        <a data-add class="btn btn-primary btn-block btn-large">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <table class="table shares-table" data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}">
+                    <thead>
+                        <tr>
+                            <th>{{ 'title.table.ile.category'|trans({}, 'SAMInvestorBundle') }}</th>
+                            <th>{{ 'title.table.ile.unitPrice'|trans({}, 'SAMInvestorBundle') }}</th>
+                            <th>{{ 'title.table.ile.amount'|trans({} , 'SAMInvestorBundle') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if form.children|length > 0 %}
+                        {% for key, child in form %}
+                            {{ form_widget(child) }}
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="3">{{ 'text.investorLegalEntity.details.shares.none'|trans({}, 'SAMInvestorBundle') }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_investorLegalEntities_entry_details_entry_widget %}
+    {% spaceless %}
+        {% set category = (form.vars.data) ? form.vars.data.shareCategory.id : "__category__" %}
+        {% set categoryLabel = (form.vars.data) ? form.vars.data.shareCategory.name : "__category_label__" %}
+        {% set amount = (form.vars.data) ? form.vars.data.amount : "__amount__" %}
+        {% set unitPrice = (form.vars.data) ? form.vars.data.shareCategory.unitPrice|format_number('€') : "__unit_price__" %}
+        <tr data-key="{{ form.vars.name }}" data-type="{{ category }}" data-unit-price="{{ (form.vars.data) ? form.vars.data.shareCategory.unitPrice : '' }}" data-amount="{{ amount }}">
+            <td>{{ categoryLabel }}</td>
+            <td>{{ unitPrice ? unitPrice : 'N/A' }}</td>
+            <td>
+                <div class="input-group">
+                    <input type="number" min="0" class="form-control" name="investor[investorLegalEntities][{{ form.parent.parent.vars.name }}][details][{{ form.vars.name }}][amount]" value="{{ amount }}"/>
+                    <a class="remove-details input-group-addon input-group-addon-primary">X</a>
+                </div>
+                <input class="excluded" type="hidden" name="investor[investorLegalEntities][{{ form.parent.parent.vars.name }}][details][{{ form.vars.name }}][shareCategory]" value="{{ category }}"/>
+            </td>
+        </tr>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_contactMerged_phones_entry_widget %}
+    {% spaceless %}
+        {% set typeLabel = "__type_label__" %}
+        {% set number = "__number__" %}
+        {% set type = "__type__" %}
+        {% if form.vars.data %}
+            {% set typeLabel = form.vars.data.typeAsString %}
+            {% set number = form.vars.data.fullNumber %}
+            {% set type = form.vars.data.type %}
+            {% if form.vars.submitted %}
+                {% set number = form.children.number.vars.value %}
+            {% endif %}
+        {% endif %}
+        <li data-key="{{ form.vars.name }}" data-type="{{ type }}">
+            <div class="form-group">
+                <label>{{ typeLabel }}</label>
+                <div class="input-group">
+                    <input type="text" name="investor[contactMerged][phones][{{ form.vars.name }}][number]" class="form-control" value="{{ number }}"/>
+                    <a class="remove-phone input-group-addon input-group-addon-primary">X</a>
+                </div>
+                <input class="excluded" type="hidden" name="investor[contactMerged][phones][{{ form.vars.name }}][type]" value="{{ type }}" />
+                {{ form_errors(form.children.number) }}
+            </div>
+        </li>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_contactMerged_socialNetworks_entry_widget %}
+    {% spaceless %}
+        {% set type = (form.vars.data) ? form.vars.data.type : "__type__" %}
+        {% set inputType = "__input_type__" %}
+        {% set typeLabel = (form.vars.data) ? form.vars.data.typeAsString : "__type_label__" %}
+        {% set url = (form.vars.data) ? form.vars.data.url : "__url__" %}
+        {% if form.vars.data %}
+            {% set inputType = "text" %}
+            {% if type is constant('SAM\\AddressBookBundle\\Entity\\SocialNetwork::TYPE_FACEBOOK') or type is constant('SAM\\AddressBookBundle\\Entity\\SocialNetwork::TYPE_LINKEDIN') %}
+                {% set inputType = "url" %}
+            {% endif %}
+        {% endif %}
+        <li data-key="{{ form.vars.name }}" data-type="{{ type }}">
+            <div class="form-group">
+                <label class="contact-social-label">{{ typeLabel }}</label>
+                <div class="input-group">
+                    <input type="{{ inputType }}" class="form-control" name="investor[contactMerged][socialNetworks][{{ form.vars.name }}][url]" value="{{ url }}"/>
+                    <a class="remove-social input-group-addon input-group-addon-primary">X</a>
+                </div>
+                <input class="excluded" type="hidden" name="investor[contactMerged][socialNetworks][{{ form.vars.name }}][type]" value="{{ type }}"/>
+            </div>
+        </li>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_contactMerged_categories_widget %}
+    {% spaceless %}
+        <ul class="list-unstyled contact-categories">
+            {% for child in form %}
+                <li>
+                    <label for="contact_merged_categories_{{ child.vars.value }}">
+                        <input
+                                type="checkbox"
+                                id="contact_merged_categories_{{ child.vars.value }}"
+                                name="investor[contactMerged][categories][]"
+                                value="{{ child.vars.value }}"
+                                {% if child.vars.data %} checked="checked"{% endif %}
+                        />
+                        <span>{{ child.vars.label }}</span>
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_contactMerged_tags_entry_widget %}
+    {% spaceless %}
+        {% set value = (form.vars.data) ? form.vars.data.name : "__value__" %}
+        <li data-key="{{ form.vars.name }}">
+            <a class="tag tag-info">{{ value }}</a>
+            <a class="remove-tag tag tag-primary">X</a>
+            <input type="hidden" name="investor[contactMerged][tags][{{ form.vars.name }}][name]" value="{{ value }}" />
+        </li>
+    {% endspaceless %}
+{% endblock %}
+
+{% block board_card_choice_widget %}
+    {% set name = '__contact_name__' %}
+    {% set userId = '__id__' %}
+
+    {% if form.vars.data %}
+        {% set userId = (form.vars.data.id) ? form.vars.data.id : '' %}
+        {% set name = form.vars.data.name %}
+    {% endif %}
+    <li data-index="{{ form.vars.name }}" data-user="{{ userId }}">
+        <div class="contact-merged-preview">
+            <div class="contact-info">
+                <span class="contact-name">{{ name }}</span>
+            </div>
+            <a class="remove-item">
+                <i class="fa fa-times"></i>
+            </a>
+            {% set type = type|default('hidden') %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    </li>
+{% endblock %}
+
+{% block _investor_investorLegalEntities_entry_users_row %}
+    {% spaceless %}
+        <section class="panel">
+            <div class="panel-heading">
+                <h4>{{ form.vars.label|trans({}, 'SAMCommonBundle') }}</h4>
+            </div>
+            {{ form_widget(form) }}
+        </section>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_investorLegalEntities_entry_contacts_entry_widget %}
+    {% spaceless %}
+        {% set contactId = '__contact_id__' %}
+        {% set contactName = '__contact_name__' %}
+        {% set picture = '__contact_picture__' %}
+        {% set contactJob = '__contact_job__' %}
+        {% if form.vars.data %}
+            {% set contactId = form.vars.data.id %}
+            {% set contactName = form.vars.data.fullName %}
+            {% set picture = form.vars.data|picture({'imagineFilter': 'user_contact_thumb_sm'}) %}
+            {% set contactJob = (form.vars.data.job) ? form.vars.data.job : '' %}
+        {% endif %}
+
+        <li data-key="{{ form.vars.name }}">
+            <input
+                    type="radio"
+                    id="ile_{{ form.parent.parent.vars.name }}_contact_primary_{{ form.vars.name }}"
+                    class="styled left center ile_contact_primary"
+                    name="investor[investorLegalEntities][{{ form.parent.parent.vars.name }}][contactPrimary]"
+                    value="{{ contactId }}"
+                    {% if form.parent.parent.vars.value.contactPrimary and form.vars.value == form.parent.parent.vars.value.contactPrimary.id %} checked="checked"{% endif %}
+            />
+            <label class="contact-merged-preview" for="ile_{{ form.parent.parent.vars.name }}_contact_primary_{{ form.vars.name }}">
+                <div class="content">
+                    <div class="contact-picture">
+                        {% if form.vars.data and is_granted(constant('SAM\\AddressBookBundle\\Security\\ContactVoter::VIEW'), form.vars.data) %}
+                            <a href="{{ path('get_contact', {id: form.vars.data.id}) }}" class="open-side-panel">
+                                <img src="{{ picture }}" alt="{{ contactName }}" title="{{ contactName }}" />
+                            </a>
+                        {% else %}
+                            <img src="{{ picture }}" alt="{{ contactName }}" title="{{ contactName }}" />
+                        {% endif %}
+                    </div>
+                    <div class="contact-info">
+                        {% if form.vars.data and is_granted(constant('SAM\\AddressBookBundle\\Security\\ContactVoter::VIEW'), form.vars.data) %}
+                            <a href="{{ path('get_contact', {id: form.vars.data.id}) }}" class="open-side-panel contact-name">
+                                {{ contactName }}
+                            </a>
+                        {% else %}
+                            <span class="contact-name">{{ contactName }}</span>
+                        {% endif %}
+                        <span class="contact-job">{{ contactJob }}</span>
+                    </div>
+                    <a class="remove-item">
+                        <i class="fa fa-times"></i>
+                    </a>
+
+                    <input type="hidden" name="{{ form.vars.full_name }}" value="{{ contactId }}"/>
+                </div>
+            </label>
+        </li>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _investor_investorLegalEntities_entry_contacts_row %}
+    {% spaceless %}
+        <div
+            class="form-group autocomplete-wrapper company-contact-autocomplete contact-merged-autocomplete-select"
+            data-url="{{ path('search_contacts_merged') }}"
+            data-placeholder="{{ form.vars.attr.placeholder|trans({}, form.vars.translation_domain) }}"
+            data-clear>
+
+            <div class="hidden new-select2-wrapper">
+                <a href="{{ path('add_contact') }}?response_type=json"
+                    class="new-select2 open-side-panel"
+                    data-event="contact_merged_form_loaded"
+                    data-browser-history="false"
+                >
+                    <i class="fa fa-plus-circle"></i>
+                    <span class="text">
+                        {{ 'contact.404'|trans({}, 'SAMCommonBundle') }}
+                        <small>{{ 'contact.create'|trans({}, 'SAMCommonBundle') }}</small>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+
+        <ul class="list-unstyled company-contacts" data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}">
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock %}

@@ -1,0 +1,81 @@
+{% if investorLegalEntities|length > 0 %}
+    <ul class="list-unstyled investors-list">
+        {% for investorLegalEntity in investorLegalEntities %}
+            {% set investor = investorLegalEntity.investor %}
+            {% spaceless %}
+            <li>
+                <section class="tabbed-panel">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="general-{{ investor.id }}">
+                            <a href="{{ path('investor_show', { investor: investor.id }) }}" class="investor-card">
+                                <div class="investor-card-head">
+                                    <div class="company">
+                                        <div class="company-logo">
+                                            {% if investor.type == constant('SAM\\InvestorBundle\\Entity\\Investor::TYPE_LEGAL_PERSON') %}
+                                            <img src="{{ investor.company|picture({'fieldName': 'logoFile', 'default': 'company.png', 'imagineFilter': 'company_thumb_md'}) }}" alt="{{ investor.name }}" class="company-thumb" />
+                                            {% else %}
+                                            <img src="{{ investor.contactMerged|picture({'imagineFilter': 'user_contact_thumb_md'}) }}" alt="{{ investor.name }}" />
+                                            {% endif %}
+                                        </div>
+                                        <div class="company-infos">
+                                            <span class="name">{{ investor.name }}</span>
+                                            {% if investor.type == constant('SAM\\InvestorBundle\\Entity\\Investor::TYPE_LEGAL_PERSON') %}
+                                            <span class="description">{{ investor.company.sector }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <span class="edit">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <div class="investor-card-body">
+                                    <div class="tooltip-wrapper" data-title="{{ investorLegalEntity.legalEntity.name }}">
+                                        <span class="investor-metric-title">Véhicule</span>
+                                        <span class="investor-metric-value">
+                                            {{ investorLegalEntity.legalEntity.name }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="investor-metric-title">Ticket</span>
+                                        <span class="investor-metric-value">{{ investorLegalEntity.investmentAmount|format_number('k€') }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="investor-metric-title">Catégorie</span>
+                                        <span class="investor-metric-value">{{ investor.category }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="investor-metric-title">Equipe</span>
+                                        <span class="investor-metric-value">{% for user in investor.investorLegalEntityUsers %}
+                                            {{ user.code }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}</span>
+                                    </div>
+                                </div>
+                                <div class="investor-card-foot">
+                                    <div>
+                                        <span>Leveur / Fees</span>
+                                        {% if investorLegalEntity.fundRaiser %}
+                                            <span class="investor-card-value">{{ investorLegalEntity.fundRaiser.company.name }}</span>
+                                            <small>{{ investorLegalEntity.fundRaiser.feesPercentage|format_number('%') }}</small>
+                                        {% else %} 
+                                            Aucun
+                                        {% endif %}
+                                    </div>
+                                    <div>{% include "@SAMAddressBook/Contact/_contact_primary_table_cell.html.twig" with { contact: investorLegalEntity.contactPrimary } %}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#general-{{ investor.id }}" role="tab" data-toggle="tab" aria-expanded="true">Général</a>
+                        </li>
+                    </ul>
+                </section>
+            </li>
+            {% endspaceless %}
+        {% endfor %}
+    </ul>
+    {{ knp_pagination_render(investorLegalEntities) }}
+{% else %}
+    {% include "@SAMCommon/Search/no-result.html.twig" with { noResults: 'Aucun LP à afficher' } %}
+{% endif %}

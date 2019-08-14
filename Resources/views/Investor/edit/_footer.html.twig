@@ -1,0 +1,15 @@
+{% trans_default_domain 'SAMCommonBundle' %}
+
+{% set cancelPath = investor.id ? path('investor_show', {investor: investor.id}) : path('investor_list') %}
+
+<footer class="fixed">
+    {% if ile is defined %}
+        <button type="button" data-toggle="modal" data-target="#ile-remove-modal-{{ ile.id }}" class="pull-left btn btn-wide btn-md btn-danger">
+            {{ 'button.ile.delete'|trans({'%legal_entity_name%': ile.legalEntity.name}, 'SAMInvestorBundle') }}
+        </button>
+    {% endif %}
+    <div class="pull-right">
+        <a class="btn btn-wide btn-info btn-md" href="{{ cancelPath }}">{{ 'cancel'|trans }}</a>
+        <input type="submit" value="{{ 'save'|trans }}" class="btn btn-wide btn-confirm btn-md" />
+    </div>
+</footer>

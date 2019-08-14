@@ -1,0 +1,94 @@
+{% extends "@SAMCommon/standard_layout.html.twig" %}
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+{% form_theme form '@SAMInvestor/Form/theme.html.twig' %}
+
+{% block meta_title %}LPs | {{ site_name }}{% endblock %}
+
+{% block page_title %}LPs{% endblock %}
+
+{% block main_container_start %}
+    {{ form_start(form, {attr: {class: 'investors-search'}}) }}
+{% endblock %}
+
+{% block main_action_buttons %}{% include "@SAMInvestor/Global/main_action_button.html.twig" %}{% endblock %}
+
+{% block search_block %}
+    <div class="search-form">
+        <div class="search-main-container">
+            {{ form_errors(form) }}
+            <div class="row">
+                {% if form.query is defined and form.query.vars.attr.autocomplete == 'on' %}
+                    <div class="col-sm-12 col-md-6 search-query search-item">
+                        <div class="search-form-wrapper query_autocomplete_wrapper">
+                            {% include "@SAMCommon/Search/form.html.twig" with {form: form} %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-sm-12 col-md-6 search-query search-item">
+                        <div class="search-form-wrapper">
+                            {% include "@SAMCommon/Search/form.html.twig" with {form: form} %}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-xs-12 col-sm-4 col-md-2 search-category search-item">
+                    {% include "@SAMCommon/Widget/widget.html.twig" with {form: form.category} %}
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-2 search-ticket search-item">
+                    {% include "@SAMCommon/Widget/min_max.html.twig" with {form: form.totalInvestmentAmount} %}
+                </div>
+                {% block extraMainSearchComponent %}{% endblock %}
+                <div class="col-xs-12 col-sm-4 col-md-2 search-item">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-search" aria-hidden="true"></i> Rechercher
+                    </button>
+                </div>
+            </div>
+            <div class="search-collapse-button {% block searchCollapseButtonClasses%}{% endblock %}">
+                <button class="btn" type="button" data-toggle="collapse" data-target="#search-advanced-collapse" aria-expanded="true" aria-controls="search-advanced-collapse">
+                    Recherche avancée
+                    <span class="arrow">
+                        <i class="fa fa-angle-down"></i>
+                    </span>
+                </button>
+                {% if investors is defined %}
+                    <small id="investor-results-count">
+                        {% include "@SAMInvestor/Investor/_count_items.html.twig" with {count: investors.getTotalItemCount} %}
+                    </small>
+                {% endif %}
+            </div>
+        </div>
+        <div class="search-advanced-container collapse" id="search-advanced-collapse">
+            <div class="row row-eq-height">
+                {% if form.dateRange is defined %}
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 search-period search-item">
+                        {{ form_label(form.dateRange) }}
+                        {% set dateRangeValue = form.dateRange.start.vars.data|date('Y-m-d') ~ " " ~ form.dateRange.end.vars.data|date('Y-m-d') %}
+                        <input type="text" name="daterange" class="form-control" value="{{ dateRangeValue }}" />
+                        <div class="hide">
+                            {{ form_widget(form.dateRange) }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-xs-12 col-sm-3 col-md-2 search-closing search-item">
+                    {% include "@SAMCommon/Widget/widget.html.twig" with {form: form.closing} %}
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2 search-sourcing-type search-item">
+                    {% include "@SAMCommon/Widget/widget.html.twig" with {form: form.sourcingType} %}
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2 search-share-category search-item">
+                    {% include "@SAMCommon/Widget/widget.html.twig" with {form: form.shareCategory} %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+    <div class="investor_search_results">
+        <div class="loader"></div>
+        <div class="results-wrapper">
+            {% include "@SAMInvestor/Investor/_search_results.html.twig" %}
+        </div>
+    </div>
+{% endblock %}

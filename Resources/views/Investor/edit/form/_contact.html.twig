@@ -1,0 +1,74 @@
+{% trans_default_domain 'SAMInvestorBundle' %}
+
+<div class="panel-heading">
+    <h4>{{ 'investor.type.contact.header'|trans }}</h4>
+</div>
+<div class="card">
+    <div class="card-content contact-details">
+        <div class="panel-body contact-merged-form">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    {{ form_row(form.contactMerged.firstName) }}
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    {{ form_row(form.contactMerged.lastName) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    {{ form_row(form.contactMerged.job) }}
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div
+                        class="form-group contact-autocomplete company-contact-autocomplete contact-autocomplete-wrapper"
+                        data-url="{{ path('search_companies') }}"
+                        data-value="{{ (investor.contactMerged and investor.contactMerged.company) ? investor.contactMerged.company.id : null }}"
+                        data-label="{{ (investor.contactMerged and investor.contactMerged.company) ? investor.contactMerged.company.name : null }}">
+
+                        <div class="hidden new-select2-wrapper">
+                            <a class="new-select2 open-side-panel" href="{{ path('add_company') }}?response_type=json"
+                               data-event="contact_merged_form_loaded" data-browser-history="false" data-from="contact">
+                                <i class="fa fa-plus-circle"></i>
+                                <span class="text">
+                                    {{ 'company.404'|trans({}, 'SAMCommonBundle') }}
+                                    <small>{{ 'company.create'|trans({}, 'SAMCommonBundle') }}</small>
+                                </span>
+                            </a>
+                        </div>
+                        <label>{{ form_label(form.contactMerged.company) }}</label>
+                        {{ form_widget(form.contactMerged.company) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    {{ form_row(form.contactMerged.emails) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    {{ form_row(form.contactMerged.phones) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    {{ form_row(form.contactMerged.categories) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    {{ form_row(form.contactMerged.tags) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    {{ form_row(form.contactMerged.socialNetworks) }}
+                </div>
+            </div>
+
+            <div style="display: none;">{{ form_row(form.contactMerged.visibility) }}</div>
+        </div>
+    </div>
+</div>

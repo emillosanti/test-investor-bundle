@@ -1,0 +1,10 @@
+# Keep in separate file because "_default" cannot be inherited in the same file
+services:
+    # MANAGERS
+    SAM\InvestorBundle\Manager\InvestorManager:
+        parent: SAM\CommonBundle\Manager\AbstractManager
+        public: true
+        arguments:
+            $projectDirectory: '%kernel.project_dir%'
+            $siteName: '%site_name%'
+

@@ -1,0 +1,24 @@
+# Keep in separate file because "_default" cannot be inherited in the same file
+services:
+    # DOCTRINE REPOSITORIES
+    SAM\InvestorBundle\Repository\Doctrine\DoctrineInvestorRepository:
+        parent: SAM\SearchBundle\Repository\AbstractDoctrineRepository
+        public: true
+        calls:
+            - ['setEntity', ['investor']]
+
+    SAM\InvestorBundle\Repository\Doctrine\DoctrineInvestorLegalEntityRepository:
+        parent: SAM\SearchBundle\Repository\AbstractDoctrineRepository
+        public: true
+        calls:
+            - ['setEntity', ['investor_legal_entity']]
+
+    # ALGOLIA SEARCH REPOSITORIES
+    SAM\InvestorBundle\Repository\AlgoliaSearch\AlgoliaSearchInvestorLegalEntityRepository:
+        parent: SAM\SearchBundle\Repository\AbstractAlgoliaSearchRepository
+        public: true
+
+    SAM\InvestorBundle\Repository\AlgoliaSearch\AlgoliaSearchInvestorRepository:
+        parent: SAM\SearchBundle\Repository\AbstractAlgoliaSearchRepository
+        public: true
+
