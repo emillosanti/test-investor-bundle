@@ -113,10 +113,11 @@ class InvestorLegalEntityType extends AbstractType
             ])
             ->add('boards', CardCollectionType::class, [
                'label' => 'form.boards.label',
-               'attr' => ['placeholder' => 'form.boards.placeholder', 'class' => 'autocomplete-cards-wrapper'],
+               'attr' => ['placeholder' => 'form.boards.placeholder', 'class' => 'autocomplete-cards-wrapper autocomplete-preloaded'],
                'entry_type' => BoardCardChoiceType::class,
                'ajax_route' => 'search_boards',
-               'translation_domain' => 'SAMInvestorBundle'
+               'translation_domain' => 'SAMInvestorBundle',
+               'autocomplete_preloaded' => true,
             ])
             ->add('contacts', CollectionType::class, [
                 'label' => false,
